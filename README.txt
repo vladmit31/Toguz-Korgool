@@ -1,1 +1,0 @@
-Kazan Game Agile Project
