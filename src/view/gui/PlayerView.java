@@ -1,72 +1,69 @@
 package view.gui;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import static types.Types.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.util.EventListener;
 
 import types.Types.EnableState;
-import view.IViewClient;
 
-public class PlayerView
+
+
+public class PlayerView extends JPanel implements HoleView.IListener 
 {
-	private final IViewClient m_client;
-	//Needs array of buttons and a handler for these buttons 
+	public interface IListener extends EventListener
+	{
+		
+		void onPlay(int holeNum, int playerNum);
+	}
 	
-	private JButton[] m_buttons = new JButton[HOLES_PER_PLAYER];
+	
+	private IListener m_listener;
+	private  HoleView[] m_holes = new HoleView[HOLES_PER_PLAYER];
 	private int m_playerNum;
 	
 	
 	
-	public PlayerView(IViewClient client, int playerNumber, JPanel panel )
+	public PlayerView(int playerNumber, IListener listener)
 	{
-		m_client = client;
+		FlowLayout flowlayout = new FlowLayout();
+		this.setLayout(flowlayout);
+		
 		m_playerNum = playerNumber;
+		m_listener = listener;
 		
-		for(int i = 0; i < m_buttons.length; i++)
+		for(int i = 0; i < m_holes.length; i++)
 		{
-			JButton button = new JButton();
-			button.setText(Integer.toString((i + 1)));
-			m_buttons[i] = button;
-			panel.add(button);
+			HoleView hole = new HoleView(i, this);
+			m_holes[i] = hole;
+			hole.setVisible(true);
+			this.add(hole);
 			
-			
-			button.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					Object source = e.getSource();
-					
-					int index = 0;
-					
-					for(JButton button : m_buttons)
-					{
-						if(button == source)
-						{
-							m_client.onMove(m_playerNum, index);
-							
-							break;
-						}
-						
-						index++;
-					}
-					
-					
-				}
-		
-			});
-			
-
 		}
+		
+		this.setVisible(true);
 		
 	}
 	
 	public void enable(EnableState state)
 	{
+		
+	}
+
+	@Override
+	public void onPlay(int holeNum)
+	{
+		m_listener.onPlay(holeNum, m_playerNum);
+		
+	}
+
+	@Override
+	public void markTuz(int index)
+	{
+		// TODO Auto-generated method stub
 		
 	}
 	

@@ -1,10 +1,26 @@
 
 package view;
+import java.util.EventListener;
+
 import types.Types.*;
 
 
 public interface IView
 {
+	interface IListener extends EventListener
+	{
+		 void onPlay(int holeNum, int playerNum); 
+		 void markTuz(int holeNum, int playerNum); 
+		
+		//Not sure what parameter
+		 void saveGame(); 
+		 void openGame();
+		 void specialSetup(); 
+		 void newGame(); 
+		
+	}
+	
+	
 	public void enablePlayer(int playerNum, EnableState state);
 	
 	public void displayMessage(String message);
@@ -13,8 +29,9 @@ public interface IView
 	
 	public void setKorgulCount(int playerNum, int holeNum, int count);
 	
-	//Reduced observer pattern that is type-safe  (doesn't use Object as a type but a concrete ViewClient)
-	public void registerClient(IViewClient client);
+	void registerListener(IListener listener);
+	
+	
 	
 
 }

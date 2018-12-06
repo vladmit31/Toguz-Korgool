@@ -5,42 +5,64 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import static types.Types.*;
+
+import java.awt.FlowLayout;
+import java.util.EventListener;
+
 import view.gui.PlayerView;
 
 
-public class View implements IView
+public class View implements IView, PlayerView.IListener
 {
+
 	
-	
-	
+	private IListener m_listener;
 	private JFrame m_frame;
 	private JPanel m_mainPanel = new JPanel();
 	
 	private JPanel m_toolbarPanel = new JPanel();
 	private JPanel m_messagePanel = new JPanel();
-	private JPanel m_playerPanel1 = new JPanel();
-	private JPanel m_playerPanel2 = new JPanel();
+	
+	private JPanel m_playerViewHolder = new JPanel();
+	private PlayerView m_playerPanel1; 
+	private PlayerView m_playerPanel2;
 	
 	
 	
 	private PlayerView[] m_playerViews = new PlayerView[NUMBER_OF_PLAYERS];
 	
 	
-	
-	private IViewClient m_client;
-	
 	public View()
 	{
 		m_frame = new JFrame("Dupa");
+	
+		
+		
 		BoxLayout boxlayout = new BoxLayout(m_mainPanel, BoxLayout.Y_AXIS);
 		
 		
-		m_mainPanel.add(m_playerPanel1);
-		m_mainPanel.add(m_playerPanel2);
+		
+		
+		BoxLayout pBoxlayout = new BoxLayout(m_frame.getContentPane(), BoxLayout.Y_AXIS);
+		
+		
+		m_playerPanel1 = new PlayerView(1, this);
+		m_playerPanel2 = new PlayerView(2, this);
+		
+		m_playerViewHolder.add(m_playerPanel1);
+		m_playerViewHolder.add(m_playerPanel2);
+		
+		//FlowLayout flowlayout = new FlowLayout();
+		//m_mainPanel.setLayout(flowlayout);
+		
+		//m_mainPanel.add(m_playerPanel1);
+		//m_mainPanel.add(m_playerPanel2);
+		
+		m_mainPanel.add(m_playerViewHolder);
 		
 		m_frame.add(m_mainPanel);
-		m_frame.setSize(700,  500);
-		
+		m_frame.setSize(700, 500);
+		m_frame.pack();
 		
 		m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -78,21 +100,24 @@ public class View implements IView
 		
 	}
 
-	
 	@Override
-	public void registerClient(IViewClient client)
+	public void registerListener(IListener listener)
 	{
-		//Only 1 client is allowed
-		assert m_client == null;
+		//There can only be 1 listener in our case (not multicast listener)
+		//Could have an array of listeners if we had more
+		assert m_listener == null;
 		
-		m_client = client;
-		
-		
-		//To later let the controller know who is who
-		m_playerViews[0] = new PlayerView(m_client, 0, m_playerPanel1);
-		m_playerViews[1] = new PlayerView(m_client, 1, m_playerPanel2);
-		
+		m_listener = listener;
 		
 	}
+
+	@Override
+	public void onPlay(int holeNum, int playerNum)
+	{
+		m_listener.onPlay(holeNum, playerNum);
+		
+	}
+
+	
 
 }
