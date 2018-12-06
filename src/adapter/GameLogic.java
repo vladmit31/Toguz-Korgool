@@ -21,5 +21,8 @@ public class GameLogic
 	{
 		System.out.println("Player: " + playerNum + " Hole Number: " + holeNum);
 	}
+
+	
+	
 	
 }
