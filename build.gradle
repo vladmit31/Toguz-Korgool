@@ -2,12 +2,9 @@
 plugins {
     id 'application'
     id 'java'
-    id 'application'
 }
 
 
-mainClassName='main.Main'
-version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
