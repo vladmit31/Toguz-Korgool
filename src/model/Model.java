@@ -12,7 +12,7 @@ public class Model implements IModel
 	}
 
 	
-	
+	//Reset the two players with a score and the amount of balls per hole.
 	public void reset(int ballsPerHole, int score)
 	{
 		for(int i = 0; i < m_players.length; i++)
