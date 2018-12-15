@@ -13,21 +13,21 @@ public interface IView
 		 void markTuz(int holeNum, int playerNum); 
 		
 		//Not sure what parameter
-		 void saveGame(); 
-		 void openGame();
-		 void specialSetup(); 
-		 void newGame(); 
+		 void onSaveGame(); 
+		 void onOpenGame();
+		 void onCustomGame(); 
+		 void onNewGame(); 
 		
 	}
 	
+	//friend i just made this not public if something doesn't work :)
+	void enablePlayer(int playerNum, EnableState state);
 	
-	public void enablePlayer(int playerNum, EnableState state);
+	void displayMessage(String message);
 	
-	public void displayMessage(String message);
+	void markTuz(int playerNum, int holeNum, MarkState state);
 	
-	public void markTuz(int playerNum, int holeNum, MarkState state);
-	
-	public void setKorgulCount(int playerNum, int holeNum, int count);
+	void setBallCount(int playerNum, int holeNum, int count);
 	
 	void registerListener(IListener listener);
 	

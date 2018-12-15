@@ -6,26 +6,28 @@ import javax.swing.JPanel;
 
 import static types.Types.*;
 
-import java.awt.FlowLayout;
-import java.util.EventListener;
-
+import view.gui.HoleView;
 import view.gui.PlayerView;
+import view.gui.ToolbarView;
 
 
-public class View implements IView, PlayerView.IListener
+public class View implements IView, PlayerView.IListener, ToolbarView.IListener
 {
 
+	//The adapter is the listener
+	private IListener m_viewListener;
 	
-	private IListener m_listener;
+	
+	
 	private JFrame m_frame;
 	private JPanel m_mainPanel = new JPanel();
 	
-	private JPanel m_toolbarPanel = new JPanel();
+	private ToolbarView m_toolbarView;
 	private JPanel m_messagePanel = new JPanel();
 	
-	private JPanel m_playerViewHolder = new JPanel();
-	private PlayerView m_playerPanel1; 
-	private PlayerView m_playerPanel2;
+	
+	//private PlayerView m_playerPanel1; 
+	//private PlayerView m_playerPanel2;
 	
 	
 	
@@ -34,23 +36,31 @@ public class View implements IView, PlayerView.IListener
 	
 	public View()
 	{
-		m_frame = new JFrame("Dupa");
+		m_frame = new JFrame("My Game");
 	
 		
+		m_mainPanel.setLayout(new BoxLayout(m_mainPanel, BoxLayout.Y_AXIS));
+		m_frame.add(m_mainPanel);
 		
-		BoxLayout boxlayout = new BoxLayout(m_mainPanel, BoxLayout.Y_AXIS);
+		//'this' is the listener (ME!)
+		m_toolbarView = new ToolbarView(this);
+		
+		m_mainPanel.add(m_toolbarView);
+		
+		
+
+		for(int i = 0; i < m_playerViews.length; i++)
+		{
+			
+			PlayerView player = new PlayerView(i, this, DEFAULT_HOLES_PER_PLAYER);
+			m_playerViews[i] = player;
+			m_mainPanel.add(player);
+			
+		}
 		
 		
 		
-		
-		BoxLayout pBoxlayout = new BoxLayout(m_frame.getContentPane(), BoxLayout.Y_AXIS);
-		
-		
-		m_playerPanel1 = new PlayerView(1, this);
-		m_playerPanel2 = new PlayerView(2, this);
-		
-		m_playerViewHolder.add(m_playerPanel1);
-		m_playerViewHolder.add(m_playerPanel2);
+	
 		
 		//FlowLayout flowlayout = new FlowLayout();
 		//m_mainPanel.setLayout(flowlayout);
@@ -58,9 +68,8 @@ public class View implements IView, PlayerView.IListener
 		//m_mainPanel.add(m_playerPanel1);
 		//m_mainPanel.add(m_playerPanel2);
 		
-		m_mainPanel.add(m_playerViewHolder);
 		
-		m_frame.add(m_mainPanel);
+		
 		m_frame.setSize(700, 500);
 		m_frame.pack();
 		
@@ -95,27 +104,49 @@ public class View implements IView, PlayerView.IListener
 	}
 
 	@Override
-	public void setKorgulCount(int playerNum, int holeNum, int count) {
-		// TODO Auto-generated method stub
+	public void setBallCount(int playerNum, int holeNum, int ballCount)
+	{
+		m_playerViews[playerNum].setBallCount(holeNum, ballCount);
 		
 	}
 
-	@Override
 	public void registerListener(IListener listener)
 	{
 		//There can only be 1 listener in our case (not multicast listener)
 		//Could have an array of listeners if we had more
-		assert m_listener == null;
+		assert m_viewListener == null;
 		
-		m_listener = listener;
+		m_viewListener = listener;
 		
 	}
 
 	@Override
 	public void onPlay(int holeNum, int playerNum)
 	{
-		m_listener.onPlay(holeNum, playerNum);
+		m_viewListener.onPlay(holeNum, playerNum);
 		
+	}
+	
+	
+	@Override
+	public void onNewGame()
+	{
+		m_viewListener.onNewGame();
+	}
+	
+	public void onSaveGame()
+	{
+		m_viewListener.onSaveGame();
+	}
+	
+	public void onOpenGame()
+	{
+		m_viewListener.onOpenGame();
+	}
+	
+	public void onCustomGame()
+	{
+		m_viewListener.onCustomGame();
 	}
 
 	

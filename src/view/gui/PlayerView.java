@@ -22,12 +22,11 @@ public class PlayerView extends JPanel implements HoleView.IListener
 	
 	
 	private IListener m_listener;
-	private  HoleView[] m_holes = new HoleView[HOLES_PER_PLAYER];
+	private  HoleView[] m_holes = new HoleView[DEFAULT_HOLES_PER_PLAYER];
 	private int m_playerNum;
 	
 	
-	
-	public PlayerView(int playerNumber, IListener listener)
+	public PlayerView(int playerNumber, IListener listener, int holeCount)
 	{
 		FlowLayout flowlayout = new FlowLayout();
 		this.setLayout(flowlayout);
@@ -65,6 +64,11 @@ public class PlayerView extends JPanel implements HoleView.IListener
 	{
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setBallCount(int holeNum, int ballCount)
+	{
+		m_holes[holeNum].setHoleCountLabel(ballCount);
 	}
 	
 	

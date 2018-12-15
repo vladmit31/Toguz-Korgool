@@ -38,17 +38,18 @@ public class HoleView extends JPanel
 		//the listener interface
 		m_listener = listener;
 		m_index = index;
-		m_ballCount = 9;
+		m_ballCount = 0;
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		
 		
 		m_button = new JButton("Play");
 		
-		m_countLabel = new JLabel("Korgol Number: " + m_ballCount);
+		m_countLabel = new JLabel(m_ballCount + " korguls");
 		
 		m_indexLabel = new JLabel();
 		m_indexLabel.setText(Integer.toString(index + 1));
