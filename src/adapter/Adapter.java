@@ -11,7 +11,7 @@ public class Adapter implements IView.IListener
 	private final IModel m_model;
 	
 	private final GameLogic m_gameLogic;
-	private final ToolbarLogic m_toolbarLogic;
+	private final SetupLogic m_setupLogic;
 	
 	//We are only talking with the interfaces not the objects themselves
 	//Dependency-injection of interfaces (we dont care what class as long as
@@ -27,7 +27,9 @@ public class Adapter implements IView.IListener
 		m_view.registerListener(this);
 		
 		m_gameLogic = new GameLogic(view, model);
-		m_toolbarLogic = new ToolbarLogic(view, model);
+		m_setupLogic = new SetupLogic(view, model);
+		
+		onNewGame();
 	}
 	
 
@@ -38,6 +40,7 @@ public class Adapter implements IView.IListener
 	{
 		m_gameLogic.onMove(playerNum, holeNum);
 		
+		
 	}
 
 	@Override
@@ -46,29 +49,46 @@ public class Adapter implements IView.IListener
 		
 	}
 
+
+
 	@Override
-	public void saveGame() {
-		
+	public void onSaveGame()
+	{
+		m_setupLogic.saveGame();
 		
 	}
 
+
+
 	@Override
-	public void openGame() {
-		// TODO Auto-generated method stub
+	public void onOpenGame()
+	{
+		m_setupLogic.openGame();
 		
 	}
 
+
+
 	@Override
-	public void specialSetup() {
-		// TODO Auto-generated method stub
+	public void onCustomGame()
+	{
+		m_setupLogic.customGame();
 		
 	}
 
+
+
 	@Override
-	public void newGame() {
-		// TODO Auto-generated method stub
+	public void onNewGame()
+	{
+		m_setupLogic.newGame();
+		m_gameLogic.newGame();
 		
 	}
+	
+	
+
+	
 	
 	
 
