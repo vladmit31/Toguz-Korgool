@@ -1,4 +1,6 @@
-package view.gui;
+package main.java.view.gui;
+
+import static main.java.types.Types.*;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 public class HoleView extends JPanel
@@ -28,6 +31,8 @@ public class HoleView extends JPanel
 	private JButton m_button;
 	private int m_ballCount;
 	
+	private JTextField m_textField;
+	
 	private final IListener m_listener;
 	
 	
@@ -43,9 +48,7 @@ public class HoleView extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		
-		
-		this.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-		
+		setBorderThickness(DEFAULT_HOLE_BORDER_THICKNESS);
 		
 		m_button = new JButton("Play");
 		
@@ -53,6 +56,9 @@ public class HoleView extends JPanel
 		
 		m_indexLabel = new JLabel();
 		m_indexLabel.setText(Integer.toString(index + 1));
+		
+		m_textField = new JTextField();
+		enableInput(EnableState.DISABLED);
 		
 		m_button.addActionListener(new ActionListener() {
 
@@ -69,6 +75,7 @@ public class HoleView extends JPanel
 		this.add(m_indexLabel);
 		this.add(m_countLabel);
 		this.add(m_button);
+		this.add(m_textField);
 		
 	}
 	
@@ -79,7 +86,41 @@ public class HoleView extends JPanel
 	
 	public void setHoleCountLabel(int count)
 	{
-		m_countLabel.setText(Integer.toString(count));
+		m_countLabel.setText(Integer.toString(count) + " korguls");
+	}
+	
+	//Change state of button 
+	public void setButtonState(EnableState state)
+	{
+		m_button.setEnabled(state == EnableState.ENABLED);
+	}
+	
+	public void setBorderThickness(int thickness)
+	{
+		this.setBorder(BorderFactory.createLineBorder(Color.black, thickness, true));
+	}
+	
+	public void enableInput(EnableState state)
+	{
+		m_textField.setVisible(state == EnableState.ENABLED);
+	}
+	
+	public int getEditHoleCount()
+	{
+		try
+		{
+			int holeCount = Integer.parseInt(m_textField.getText());
+			
+			return holeCount;
+		}
+		catch (NumberFormatException e)
+		{
+			return DEFAULT_BALLS_PER_HOLE;
+		}
+		
+		
+		
+
 	}
 	
 

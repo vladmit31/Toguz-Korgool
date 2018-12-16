@@ -1,6 +1,7 @@
-package adapter;
-import view.IView;
-import model.IModel;
+package main.java.adapter;
+import main.java.model.IModel;
+import main.java.types.Types.EnableState;
+import main.java.view.IView;
 
 
 
@@ -54,7 +55,9 @@ public class Adapter implements IView.IListener
 	@Override
 	public void onSaveGame()
 	{
-		m_setupLogic.saveGame();
+		String filename = m_view.getSavePath();
+		
+		m_model.save(filename);
 		
 	}
 
@@ -63,7 +66,10 @@ public class Adapter implements IView.IListener
 	@Override
 	public void onOpenGame()
 	{
-		m_setupLogic.openGame();
+		String filename = m_view.getOpenPath();
+		m_model.read(filename);
+		m_gameLogic.onLoad();
+		
 		
 	}
 
@@ -72,7 +78,7 @@ public class Adapter implements IView.IListener
 	@Override
 	public void onCustomGame()
 	{
-		m_setupLogic.customGame();
+		m_setupLogic.customGame(EnableState.ENABLED);
 		
 	}
 
@@ -83,6 +89,25 @@ public class Adapter implements IView.IListener
 	{
 		m_setupLogic.newGame();
 		m_gameLogic.newGame();
+		
+	}
+
+
+
+	@Override
+	public void onApply()
+	{
+		m_setupLogic.customGame(EnableState.DISABLED);
+		
+	}
+
+
+
+	@Override
+	public void onCancel() 
+	{
+		m_setupLogic.customGame(EnableState.DISABLED);
+		System.out.println("On cancel clicked");
 		
 	}
 	
