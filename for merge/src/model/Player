@@ -1,0 +1,61 @@
+package model;
+import static types.Types.*;
+
+public class Player
+{
+	private int[] m_holes;
+	
+	//Score is a kazan (better readability)
+	private int m_score;
+	
+	private int m_tuzIndex;
+	
+	public Player(int playerNum, int ballsPerHole, int score)
+	{
+		m_holes = new int[DEFAULT_HOLES_PER_PLAYER];
+		setScore(score);
+		
+		
+		//By default no player has a tuz
+		m_tuzIndex = -1;
+		
+		for(int i = 0; i < m_holes.length; i++)
+		{
+			m_holes[i] = ballsPerHole;
+		}
+		
+	}
+
+	public int getBalls(int holeIndex)
+	{
+		return m_holes[holeIndex];
+	}
+	
+	public void setBalls(int holeIndex, int ballCount)
+	{
+		m_holes[holeIndex] = ballCount;
+	}
+
+	public int getScore()
+	{
+		return m_score;
+	}
+
+	public void setScore(int score)
+	{
+		m_score = score;
+	}
+
+	public int getTuzIndex()
+	{
+		return m_tuzIndex;
+	}
+
+	public void setTuzIndex(int tuzIndex)
+	{
+		m_tuzIndex = tuzIndex;
+		
+	}
+
+	
+}
