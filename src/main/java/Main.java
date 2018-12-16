@@ -1,6 +1,7 @@
-import adapter.Adapter;
-import model.Model;
-import view.View;
+package main.java;
+import main.java.adapter.Adapter;
+import main.java.model.Model;
+import main.java.view.View;
 
 public class Main {
 

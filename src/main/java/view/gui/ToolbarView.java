@@ -1,11 +1,14 @@
-package view.gui;
+package main.java.view.gui;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import main.java.types.Types.EnableState;
 
 
 
@@ -19,13 +22,17 @@ public class ToolbarView extends JPanel
 		default void onSaveGame() {}
 		default void onOpenGame() {}
 		default void onCustomGame() {}
+		default void onApply() {}
+		default void onCancel() {}
 	}
 	
 	private JButton[] m_toolbarButtons = {
 			new JButton("New game"),
 			new JButton("Save game"),
 			new JButton("Open game"),
-			new JButton("Custom game")
+			new JButton("Custom game"),
+			new JButton("Apply"),
+			new JButton("Cancel")
 	};
 	
 	private enum ActionType
@@ -33,7 +40,9 @@ public class ToolbarView extends JPanel
 		NEW_GAME,
 		SAVE_GAME,
 		OPEN_GAME,
-		CUSTOM_GAME
+		CUSTOM_GAME,
+		APPLY,
+		CANCEL
 	}
 	
 	
@@ -53,8 +62,6 @@ public class ToolbarView extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-
-					//TODO: call method
 					
 					int type =  ActionType.NEW_GAME.ordinal();
 					
@@ -80,24 +87,78 @@ public class ToolbarView extends JPanel
 								m_listener.onCustomGame();
 								break;
 								
+							case APPLY:
+								m_listener.onApply();
+								break;
+								
+							case CANCEL:
+								m_listener.onCancel();
+								break;
+								
 							default:
 								assert(false); //BUG!!!!!!!!!!!!!!!
 								break;
 							}
-							
-							
+
 							break;
 							
 						}
 						
 						type++;
-						
-						
+	
 					}
 
 				}
 		
 			});
 		}
+		
+		showCustomGameButtons(EnableState.DISABLED);
+		
 	}
+	
+	public void showCustomGameButtons(EnableState state)
+	{
+		if(state == EnableState.ENABLED)
+		{
+			for(int i = 0; i < m_toolbarButtons.length; i++)
+			{
+				if(m_toolbarButtons[i].getText().equals("Apply"))
+				{
+					m_toolbarButtons[i].setVisible(true);
+				}
+				else if(m_toolbarButtons[i].getText().equals("Cancel"))
+				{
+					m_toolbarButtons[i].setVisible(true);
+				}
+				else
+				{
+					m_toolbarButtons[i].setVisible(false);
+				}
+
+			}
+		}
+		else
+		{
+			System.out.println("i here");
+			for(int i = 0; i < m_toolbarButtons.length; i++)
+			{
+				if(m_toolbarButtons[i].getText().equals("Apply"))
+				{
+					m_toolbarButtons[i].setVisible(false);
+				}
+				else if(m_toolbarButtons[i].getText().equals("Cancel"))
+				{
+					m_toolbarButtons[i].setVisible(false);
+				}
+				else
+				{
+					m_toolbarButtons[i].setVisible(true);
+				}
+			}
+		}
+		
+	}
+	
+	
 }
